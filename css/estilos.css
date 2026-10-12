@@ -1,0 +1,88 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #fff7ed;
+  color: #292524;
+}
+
+/* Encabezado: logo + nombre del negocio */
+.appbar {
+  background: #9a3412;
+  color: white;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.appbar h1 { margin: 0; font-size: 1.3rem; }
+.logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+}
+
+main {
+  max-width: 720px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  background: white;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+section h2 { margin-top: 0; color: #9a3412; }
+
+/* Catálogo: las tarjetas se acomodan solas según el ancho de pantalla */
+.grid {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.producto {
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: .75rem;
+  display: flex;
+  flex-direction: column;
+}
+.producto__foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: .5rem;
+  background: #ffedd5;
+}
+.producto strong { display: block; margin-bottom: .25rem; }
+.producto .precio { color: #9a3412; font-weight: bold; }
+.producto p { margin: .4rem 0; font-size: .85rem; color: #57534e; }
+.producto button { margin-top: auto; }
+
+button {
+  background: #9a3412;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: .5rem 1rem;
+  cursor: pointer;
+  font-size: .9rem;
+}
+button:hover { background: #7c2d12; }
+
+/* Pie de página */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: .85rem;
+  color: #57534e;
+}
