@@ -11,7 +11,7 @@
 ## Historial de avances
 | Avance | Hash del commit entregado | Fecha |
 |---|---|---|
-| 1 | | 11/10/2026 |
+| 1 | 5a552df3762224aeac7576a7b0f031821c991c9d | 11/10/2026 |
 | 2 | | |
 | 3 | | |
 | 4 | | |
