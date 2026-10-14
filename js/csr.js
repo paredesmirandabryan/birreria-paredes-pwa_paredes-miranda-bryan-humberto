@@ -1,21 +1,17 @@
-// csr.js — Renderizado en el Cliente (CSR)
-// El HTML llega con el <div id="catalogo"> vacío; este archivo, ya corriendo
-// en el navegador, pide los datos con fetch() y construye las tarjetas.
-
-// 1) Buscamos el contenedor vacío que dejamos en index.html
+// csr.js — Renderizado en el Cliente (CSR) + filtro por categoría
 const contenedorCatalogo = document.getElementById("catalogo");
 
-// 2) fetch() le pide catalogo.json al servidor
 fetch("catalogo.json")
-  .then((respuesta) => respuesta.json()) // convierte el texto en un array de objetos
+  .then((respuesta) => respuesta.json())
   .then((productos) => {
-    // 3) Ya tenemos los 15 productos: limpiamos el contenedor y dibujamos
     contenedorCatalogo.innerHTML = "";
     contenedorCatalogo.removeAttribute("aria-busy");
 
     productos.forEach((producto) => {
       const tarjeta = document.createElement("div");
       tarjeta.className = "producto";
+      // guardamos la categoría en la tarjeta para poder filtrarla después
+      tarjeta.dataset.categoria = producto.categoria;
 
       tarjeta.innerHTML = `
         <img class="producto__foto" src="${producto.imagen}" alt="${producto.nombre}" loading="lazy">
@@ -27,15 +23,48 @@ fetch("catalogo.json")
 
       contenedorCatalogo.appendChild(tarjeta);
 
-      // Conecta el botón con carrito.js (se crea en el avance 2).
-      // Mientras ese archivo no exista, el botón simplemente no hace nada.
+      // carrito.js se conecta en el punto 2; mientras no exista, no hace nada
       tarjeta.querySelector("button").addEventListener("click", () => {
         if (typeof agregarAlCarrito === "function") agregarAlCarrito(producto);
       });
     });
+
+    crearFiltros(productos);
   })
   .catch((error) => {
     contenedorCatalogo.innerHTML = "<p>No se pudo cargar el catálogo. Intenta más tarde.</p>";
     contenedorCatalogo.removeAttribute("aria-busy");
     console.error("Error al cargar catálogo:", error);
   });
+
+// Crea los botones de categoría y oculta las tarjetas que no coinciden
+function crearFiltros(productos) {
+  // categorías sin repetir, en el orden en que aparecen en catalogo.json
+  const categorias = [...new Set(productos.map((p) => p.categoria))];
+
+  const barra = document.createElement("div");
+  barra.className = "filtros";
+  barra.setAttribute("role", "group");
+  barra.setAttribute("aria-label", "Filtrar por categoría");
+
+  ["Todos", ...categorias].forEach((categoria) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = categoria;
+    boton.setAttribute("aria-pressed", categoria === "Todos" ? "true" : "false");
+
+    boton.addEventListener("click", () => {
+      barra.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", "false"));
+      boton.setAttribute("aria-pressed", "true");
+
+      contenedorCatalogo.querySelectorAll(".producto").forEach((tarjeta) => {
+        tarjeta.hidden = categoria !== "Todos" && tarjeta.dataset.categoria !== categoria;
+      });
+    });
+
+    barra.appendChild(boton);
+  });
+
+  // la barra va justo antes del catálogo
+  contenedorCatalogo.before(barra);
+}
