@@ -15,3 +15,11 @@
 | 2 | | |
 | 3 | | |
 | 4 | | |
+
+## Comparación SSR vs CSR
+
+### SSR (Django): los productos llegan escritos en el HTML
+![Código fuente SSR](docs/captura-ssr.png)
+
+### CSR (JavaScript): el div del catálogo llega vacío
+![Código fuente CSR](docs/captura-csr.png)
