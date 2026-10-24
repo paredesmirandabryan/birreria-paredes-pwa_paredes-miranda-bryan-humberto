@@ -1,21 +1,16 @@
-// carrito.js — Carrito de compras con localStorage
-// localStorage guarda el carrito dentro del navegador: sobrevive al recargar
-// la página y a cerrar la pestaña.
+// carrito.js — Carrito con localStorage + sincronización al volver la conexión
 
 const CLAVE_CARRITO = "carrito";
 
-// Lee el carrito guardado (si no hay nada, regresa un array vacío)
 function leerCarrito() {
-  const guardado = localStorage.getItem(CLAVE_CARRITO); // localStorage solo guarda texto
-  return guardado ? JSON.parse(guardado) : [];          // JSON.parse lo convierte a array
+  const guardado = localStorage.getItem(CLAVE_CARRITO);
+  return guardado ? JSON.parse(guardado) : [];
 }
 
-// Guarda el carrito (JSON.stringify lo convierte a texto)
 function guardarCarrito(carrito) {
   localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
 }
 
-// AGREGAR: suma el producto, o le sube la cantidad si ya estaba
 function agregarAlCarrito(producto) {
   const carrito = leerCarrito();
   const existente = carrito.find((item) => item.id === producto.id);
@@ -33,9 +28,13 @@ function agregarAlCarrito(producto) {
 
   guardarCarrito(carrito);
   pintarCarrito();
+
+  // Notificación útil: solo aparece si el usuario ya dio permiso (punto 2)
+  if (typeof notificar === "function") {
+    notificar("Pedido agregado", `${producto.nombre} se agregó a tu carrito.`);
+  }
 }
 
-// SUMAR / RESTAR: cambia la cantidad; si llega a 0, el producto se quita solo
 function cambiarCantidad(id, delta) {
   const carrito = leerCarrito();
   const item = carrito.find((item) => item.id === id);
@@ -48,14 +47,12 @@ function cambiarCantidad(id, delta) {
   pintarCarrito();
 }
 
-// QUITAR: elimina el producto sin importar su cantidad
 function quitarDelCarrito(id) {
   const carrito = leerCarrito().filter((item) => item.id !== id);
   guardarCarrito(carrito);
   pintarCarrito();
 }
 
-// Dibuja el carrito en pantalla a partir de lo que hay en localStorage y calcula el TOTAL
 function pintarCarrito() {
   const carrito = leerCarrito();
   const lista = document.getElementById("carrito-lista");
@@ -89,8 +86,6 @@ function pintarCarrito() {
   total.textContent = suma;
 }
 
-// Un solo listener en la lista atiende los clics de TODOS los botones (+, −, Quitar),
-// incluso los que se crean después cada vez que se vuelve a pintar el carrito.
 function manejarClicCarrito(evento) {
   const boton = evento.target.closest("button[data-accion]");
   if (!boton) return;
@@ -101,8 +96,47 @@ function manejarClicCarrito(evento) {
   if (boton.dataset.accion === "quitar") quitarDelCarrito(id);
 }
 
-// Al cargar la página, pinta lo que ya estaba guardado (así persiste al recargar)
+// SINCRONIZAR: en una app real aquí iría un fetch() con method "POST" al servidor.
+// Lo simulamos para practicar el patrón sin conexión -> con conexión.
+function sincronizarCarrito() {
+  const mensaje = document.getElementById("carrito-mensaje");
+
+  // navigator.onLine: el navegador dice si hay internet
+  if (!navigator.onLine) {
+    mensaje.textContent = "Sin conexión: tu carrito se enviará cuando vuelva el internet.";
+    return;
+  }
+
+  const carrito = leerCarrito();
+  if (carrito.length === 0) {
+    mensaje.textContent = "Tu carrito está vacío: no hay nada que enviar.";
+    return;
+  }
+
+  const piezas = carrito.reduce((suma, item) => suma + item.cantidad, 0);
+  mensaje.textContent = `Carrito enviado: ${piezas} producto(s). ✓ (simulado)`;
+
+  if (typeof notificar === "function") {
+    notificar("Carrito enviado", `Se envió tu pedido de ${piezas} producto(s).`);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   pintarCarrito();
   document.getElementById("carrito-lista").addEventListener("click", manejarClicCarrito);
+  document.getElementById("btn-sincronizar").addEventListener("click", sincronizarCarrito);
+
+  // El navegador avisa cuando se pierde o regresa la conexión
+  window.addEventListener("online", () => {
+    if (leerCarrito().length > 0) {
+      sincronizarCarrito(); // vuelve el internet: se "envía" el carrito y se avisa
+    } else {
+      document.getElementById("carrito-mensaje").textContent = "Conexión restablecida.";
+    }
+  });
+
+  window.addEventListener("offline", () => {
+    document.getElementById("carrito-mensaje").textContent =
+      "Se perdió la conexión. Tu carrito se guarda y se enviará al volver.";
+  });
 });
