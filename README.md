@@ -13,7 +13,7 @@
 |---|---|---|
 | 1 | 5a552df3762224aeac7576a7b0f031821c991c9d | 11/10/2026 |
 | 2 | 74b93009693f3b4803bc8674747b7096e47904b3 | 18/10/2026 |
-| 3 | | |
+| 3 | 17a5e8a96370909515f25ac980ac0bb81a65f37d | 10/25/2026 |        
 | 4 | | |
 
 ## Comparación SSR vs CSR
@@ -31,3 +31,6 @@
 
 ### sw.js: Workbox precachea el catálogo y las fotos
 ![Código fuente sw.js](docs/captura-sw.png)
+
+
+
