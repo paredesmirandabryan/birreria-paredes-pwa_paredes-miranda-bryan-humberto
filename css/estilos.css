@@ -1,178 +1,479 @@
+/* ===== Birriería Paredes · diseño v2 ===== */
+:root {
+  --cafe: #431407;
+  --ladrillo: #9a3412;
+  --brasa: #c2410c;
+  --mostaza: #f59e0b;
+  --crema: #fff7ed;
+  --arena: #fed7aa;
+  --texto: #292524;
+  --suave: #78716c;
+}
+
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #fff7ed;
-  color: #292524;
+  font-family: system-ui, "Segoe UI", sans-serif;
+  color: var(--texto);
+  background-color: var(--crema);
+  /* puntitos suaves, como papel de estraza */
+  background-image: radial-gradient(rgba(194, 65, 12, .13) 1px, transparent 1.4px);
+  background-size: 22px 22px;
 }
 
-/* Encabezado: logo + nombre del negocio */
+/* ---------- Encabezado ---------- */
 .appbar {
-  background: #9a3412;
-  color: white;
-  padding: 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 2000;
   display: flex;
   align-items: center;
-  gap: .75rem;
+  gap: .8rem;
+  padding: .8rem 1.1rem;
+  color: #fff;
+  background: linear-gradient(120deg, #2a0d04, var(--ladrillo) 75%, var(--brasa));
+  box-shadow: 0 4px 14px rgba(67, 20, 7, .35);
 }
-.appbar h1 { margin: 0; font-size: 1.3rem; }
+/* franja tipo sarape debajo del encabezado */
+.appbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 9px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--mostaza) 0 18px,
+    var(--brasa) 18px 36px,
+    #fff 36px 54px,
+    var(--cafe) 54px 72px,
+    #16a34a 72px 90px
+  );
+}
+.appbar h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 4.8vw, 1.7rem);
+  letter-spacing: .02em;
+  line-height: 1.1;
+}
 .logo {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  border-radius: 8px;
-  background: white;
+  border-radius: 50%;
+  background: #fff;
+  padding: 2px;
+  box-shadow: 0 0 0 3px var(--mostaza);
 }
 
+/* Indicador conectado / sin conexión (lo mueve app.js) */
+.pill {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, .3);
+  color: #fff;
+  border-radius: 999px;
+  padding: .3rem .8rem;
+  font-size: .78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  margin-right: .45rem;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, .3);
+}
+.pill.sin-conexion { background: #1c1917; }
+.pill.sin-conexion::before {
+  background: #f87171;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, .3);
+}
+
+/* ---------- Estructura general ---------- */
 main {
-  max-width: 720px;
-  margin: 1.5rem auto;
+  max-width: 1180px;
+  margin: 2.2rem auto 1rem;
   padding: 0 1rem;
 }
 
-section {
-  background: white;
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
+/* ---------- Banner de bienvenida ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+  padding: clamp(1.4rem, 5vw, 2.6rem);
+  border-radius: 28px;
+  color: var(--crema);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(245, 158, 11, .5), transparent 42%),
+    radial-gradient(circle at 8% 100%, rgba(194, 65, 12, .7), transparent 50%),
+    linear-gradient(135deg, #2a0d04, #7c2d12);
+  box-shadow: 0 22px 40px -22px rgba(67, 20, 7, .8);
 }
-section h2 { margin-top: 0; color: #9a3412; }
+.hero > * { position: relative; z-index: 1; }
+.hero::after {
+  content: "BIRRIA";
+  position: absolute;
+  right: -.4rem;
+  bottom: -1.1rem;
+  font: 900 clamp(4rem, 17vw, 9.5rem)/1 Georgia, serif;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, .13);
+  pointer-events: none;
+}
+.hero__etiqueta {
+  display: inline-block;
+  margin: 0;
+  padding: .2rem .8rem;
+  border-radius: 999px;
+  background: var(--mostaza);
+  color: var(--cafe);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.hero h2 {
+  margin: .7rem 0 .5rem;
+  max-width: 14ch;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 6vw, 3.1rem);
+  line-height: 1.05;
+  color: #fff;
+}
+.hero p:last-child {
+  margin: 0;
+  max-width: 36ch;
+  color: var(--arena);
+}
 
-/* Catálogo: las tarjetas se acomodan solas según el ancho de pantalla */
-.grid {
+/* ---------- Dos columnas: catálogo | carrito ---------- */
+.layout {
   display: grid;
-  gap: .75rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.catalogo-col { min-width: 0; }
+
+@media (min-width: 900px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 360px; }
+  /* el carrito se queda fijo mientras bajas por el catálogo */
+  .lateral { position: sticky; top: 104px; }
 }
 
-.producto {
-  border: 1px solid #fed7aa;
-  border-radius: 8px;
-  padding: .75rem;
-  display: flex;
-  flex-direction: column;
+/* Títulos de sección */
+.catalogo-col > h2,
+.panel h2 {
+  margin: 0 0 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.55rem;
+  color: var(--cafe);
 }
-.producto__foto {
+.catalogo-col > h2::after,
+.panel h2::after {
+  content: "";
   display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: .5rem;
-  background: #ffedd5;
+  width: 48px;
+  height: 4px;
+  margin-top: .4rem;
+  border-radius: 4px;
+  background: var(--mostaza);
 }
-.producto strong { display: block; margin-bottom: .25rem; }
-.producto .precio { color: #9a3412; font-weight: bold; }
-.producto p { margin: .4rem 0; font-size: .85rem; color: #57534e; }
-.producto button { margin-top: auto; }
 
+/* ---------- Botones ---------- */
 button {
-  background: #9a3412;
-  color: white;
+  font: inherit;
+  font-size: .92rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brasa), var(--ladrillo));
   border: none;
-  border-radius: 8px;
-  padding: .5rem 1rem;
+  border-radius: 999px;
+  padding: .6rem 1.2rem;
   cursor: pointer;
-  font-size: .9rem;
+  box-shadow: 0 6px 14px -6px rgba(154, 52, 18, .7);
+  transition: transform .12s ease, filter .15s ease;
 }
-button:hover { background: #7c2d12; }
+button:hover { filter: brightness(1.1); }
+button:active { transform: scale(.96); }
+button:focus-visible { outline: 3px solid var(--mostaza); outline-offset: 2px; }
 
-/* Pie de página */
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: .85rem;
-  color: #57534e;
-}
-
-/* Las tarjetas ocultas por el filtro deben desaparecer de verdad */
-.producto[hidden] { display: none; }
-
-/* Botones de categoría (csr.js los crea encima del catálogo) */
+/* ---------- Filtros por categoría (los crea csr.js) ---------- */
 .filtros {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
-  margin-bottom: .75rem;
+  margin: 0 0 1.1rem;
 }
 .filtros button {
-  background: white;
-  color: #9a3412;
-  border: 1px solid #9a3412;
+  background: #fff;
+  color: var(--ladrillo);
+  border: 2px solid var(--ladrillo);
+  box-shadow: none;
+  padding: .4rem 1rem;
 }
-.filtros button:hover { background: #ffedd5; }
+.filtros button:hover { background: #ffedd5; filter: none; }
 .filtros button[aria-pressed="true"] {
-  background: #9a3412;
-  color: white;
+  background: var(--cafe);
+  border-color: var(--cafe);
+  color: var(--mostaza);
 }
 
-/* ===== Carrito ===== */
-#carrito-lista { list-style: none; padding: 0; margin: 0; }
+/* ---------- Catálogo ---------- */
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
+}
+@media (min-width: 900px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1100px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
+.producto {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 20px;
+  padding: .5rem .5rem .8rem;
+  border: 1px solid rgba(154, 52, 18, .1);
+  box-shadow: 0 10px 24px -14px rgba(124, 45, 18, .55);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.producto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 32px -16px rgba(124, 45, 18, .6);
+}
+/* las tarjetas que oculta el filtro deben desaparecer de verdad */
+.producto[hidden] { display: none; }
+
+/* etiqueta de categoría sobre la foto (sale del data-categoria de csr.js) */
+.producto::before {
+  content: attr(data-categoria);
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  background: rgba(67, 20, 7, .88);
+  color: #ffedd5;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .25rem .65rem;
+  border-radius: 999px;
+}
+
+.producto__foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: .7rem;
+  background: var(--arena);
+}
+.producto strong {
+  padding: 0 .35rem;
+  margin-bottom: .35rem;
+  min-height: 2.5em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: .98rem;
+  line-height: 1.25;
+  color: var(--cafe);
+}
+.producto .precio {
+  align-self: flex-start;
+  margin: 0 .35rem;
+  padding: .12rem .8rem;
+  border-radius: 999px;
+  background: var(--mostaza);
+  color: var(--cafe);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.producto p {
+  margin: .35rem .35rem .7rem;
+  font-size: .78rem;
+  color: var(--suave);
+}
+.producto button { margin: auto .25rem 0; }
+
+/* ---------- Paneles ---------- */
+.panel {
+  background: #fff;
+  border-radius: 22px;
+  padding: 1.2rem 1.3rem;
+  border: 1px solid rgba(154, 52, 18, .1);
+  box-shadow: 0 14px 30px -18px rgba(124, 45, 18, .5);
+  scroll-margin-top: 100px;
+}
+
+/* ---------- Carrito (tarjeta oscura a la derecha) ---------- */
+.panel--carrito {
+  background: linear-gradient(170deg, #3b1206, var(--cafe));
+  color: var(--crema);
+  border: none;
+  border-top: 6px solid var(--mostaza);
+}
+.panel--carrito h2 { color: #fff; }
+
+#carrito-lista {
+  list-style: none;
+  margin: 0 0 .6rem;
+  padding: 0 .2rem 0 0;
+  max-height: 42vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
 #carrito-lista li {
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "nombre precio"
+    "cantidad quitar";
+  gap: .45rem .6rem;
   align-items: center;
-  gap: .6rem;
-  border-bottom: 1px solid #ffedd5;
-  padding: .5rem 0;
+  padding: .7rem .8rem;
+  margin-bottom: .55rem;
+  background: rgba(255, 255, 255, .07);
+  border-radius: 14px;
 }
 #carrito-lista li.carrito-vacio {
   display: block;
-  border-bottom: none;
-  color: #57534e;
+  padding: 1.2rem;
+  text-align: center;
+  color: var(--arena);
+  background: transparent;
+  border: 2px dashed rgba(254, 215, 170, .35);
 }
 
-.carrito-nombre { font-weight: 600; }
+.carrito-nombre { grid-area: nombre; font-weight: 700; color: #fff; line-height: 1.2; }
+.carrito-precio { grid-area: precio; font-weight: 800; color: var(--mostaza); white-space: nowrap; }
+.carrito-cantidad { grid-area: cantidad; display: flex; align-items: center; gap: .5rem; }
+.carrito-quitar {
+  grid-area: quitar;
+  justify-self: end;
+  background: transparent;
+  color: #fecaca;
+  border: 1.5px solid rgba(254, 202, 202, .5);
+  box-shadow: none;
+  padding: .25rem .8rem;
+  font-size: .78rem;
+}
+.carrito-quitar:hover { background: rgba(254, 202, 202, .12); filter: none; }
 
-.carrito-cantidad { display: flex; align-items: center; gap: .4rem; }
 .carrito-cantidad button {
-  padding: .1rem .55rem;
-  font-size: .95rem;
-  line-height: 1.4;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--cafe);
+  background: var(--mostaza);
+  box-shadow: none;
 }
 .carrito-cantidad__valor {
-  min-width: 1.4rem;
+  min-width: 1.5rem;
   text-align: center;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
-.carrito-precio { font-weight: bold; color: #9a3412; white-space: nowrap; }
-
-.carrito-quitar {
-  background: transparent;
-  color: #b23b3b;
-  border: 1px solid #e3b8b8;
-  padding: .25rem .6rem;
-  font-size: .8rem;
+.carrito-total {
+  margin: .8rem 0 1rem;
+  padding-top: .8rem;
+  text-align: right;
+  border-top: 1px dashed rgba(254, 215, 170, .35);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--mostaza);
 }
-.carrito-quitar:hover { background: #fbeaea; color: #8f2d2d; }
 
-.carrito-total { font-size: 1.15rem; font-weight: bold; margin-bottom: 0; }
+#btn-sincronizar {
+  width: 100%;
+  color: var(--cafe);
+  background: linear-gradient(135deg, #fbbf24, var(--mostaza));
+  box-shadow: none;
+}
+.panel--carrito .mensaje { color: var(--arena); }
 
-/* En celular, cada renglón se acomoda en dos columnas para que no se encimen */
-@media (max-width: 480px) {
-  #carrito-lista li {
-    grid-template-columns: 1fr auto;
-    grid-template-areas: "nombre nombre" "cantidad precio" "quitar quitar";
-  }
-  .carrito-nombre { grid-area: nombre; }
-  .carrito-cantidad { grid-area: cantidad; }
-  .carrito-precio { grid-area: precio; justify-self: end; }
-  .carrito-quitar { grid-area: quitar; justify-self: start; }
-  .mensaje { color: #57534e; font-size: .9rem; min-height: 1.2em; }
+/* ---------- Notificaciones y ubicación ---------- */
+.extras {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+@media (min-width: 900px) {
+  .extras { grid-template-columns: 1fr 1.5fr; align-items: start; }
+}
 
-.sucursal-info { color: #57534e; font-size: .9rem; margin: 0 0 .6rem; }
+.mensaje { color: var(--suave); font-size: .9rem; min-height: 1.2em; }
+.mensaje a { color: var(--ladrillo); font-weight: 700; }
+.sucursal-info { color: var(--suave); font-size: .9rem; margin: 0 0 .8rem; }
 
-/* El mapa necesita una altura fija, si no Leaflet no tiene dónde dibujar */
 .mapa {
-  height: 260px;
-  border-radius: 8px;
-  margin-top: .75rem;
-  border: 1px solid #fed7aa;
+  height: 280px;
+  margin-top: .8rem;
+  border-radius: 16px;
+  border: 2px solid var(--arena);
+  isolation: isolate; /* evita que el mapa se monte sobre el encabezado */
 }
-.mensaje a { color: #9a3412; }
 
+/* ---------- Botón flotante (solo celular) ---------- */
+.ir-carrito {
+  display: none;
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1500;
+  padding: .7rem 1.2rem;
+  border-radius: 999px;
+  background: var(--mostaza);
+  color: var(--cafe);
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 10px 24px -6px rgba(67, 20, 7, .7);
+}
+@media (max-width: 899px) {
+  .ir-carrito { display: inline-flex; align-items: center; gap: .4rem; }
+  footer { padding-bottom: 5rem; }
+}
+
+/* ---------- Pie de página ---------- */
+footer {
+  margin-top: 2.5rem;
+  padding: 1.4rem 1rem;
+  text-align: center;
+  color: var(--arena);
+  background: var(--cafe);
+  border-top: 6px solid var(--mostaza);
+  font-size: .85rem;
+}
+footer p { margin: 0; }
+
+/* Respeta a quien desactiva las animaciones en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
 }
