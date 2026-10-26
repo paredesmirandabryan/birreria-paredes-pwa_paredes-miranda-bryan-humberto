@@ -163,4 +163,16 @@ footer {
   .carrito-precio { grid-area: precio; justify-self: end; }
   .carrito-quitar { grid-area: quitar; justify-self: start; }
   .mensaje { color: #57534e; font-size: .9rem; min-height: 1.2em; }
+
+.sucursal-info { color: #57534e; font-size: .9rem; margin: 0 0 .6rem; }
+
+/* El mapa necesita una altura fija, si no Leaflet no tiene dónde dibujar */
+.mapa {
+  height: 260px;
+  border-radius: 8px;
+  margin-top: .75rem;
+  border: 1px solid #fed7aa;
+}
+.mensaje a { color: #9a3412; }
+
 }
