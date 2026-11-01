@@ -5,8 +5,8 @@
 // CAMBIA estas coordenadas por las de tu sucursal (ver el paso 3.4)
 const SUCURSAL = {
   nombre: "Birriería Paredes",
-  lat: 29.00921146687666,
-  lon: -110.90377522502918,
+  lat: 29.1182334,
+  lon: -111.0379247,
 };
 
 // Distancia en línea recta (km) entre dos puntos. Es el respaldo si no hay ruta por calles.
