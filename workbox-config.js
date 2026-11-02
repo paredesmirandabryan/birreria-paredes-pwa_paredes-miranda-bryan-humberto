@@ -16,6 +16,8 @@ module.exports = {
 	// Activa el Service Worker nuevo de inmediato
 	skipWaiting: true,
 	clientsClaim: true,
+	// Mete el código de Workbox dentro de sw.js (sin archivo workbox-*.js aparte)
+	inlineWorkboxRuntime: true,
 	ignoreURLParametersMatching: [
 		/^utm_/,
 		/^fbclid$/
