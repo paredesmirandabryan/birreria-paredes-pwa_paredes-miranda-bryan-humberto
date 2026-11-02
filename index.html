@@ -14,6 +14,14 @@
 </head>
 <body>
 
+  <!-- Intro: logo y título durante 1.5 s al entrar (app.js la quita después) -->
+  <div class="intro" aria-hidden="true">
+    <img src="img/logo.png" alt="" class="intro__logo" width="116" height="116">
+    <p class="intro__titulo">Birriería Paredes</p>
+    <p class="intro__lema">Birria con sabor de casa</p>
+    <div class="intro__franja"></div>
+  </div>
+
   <!-- ============ APP SHELL ============ -->
   <header class="appbar">
     <img src="img/logo.png" alt="Logo de Birriería Paredes" class="logo">
@@ -24,8 +32,13 @@
   <main>
     <div class="hero">
       <p class="hero__etiqueta">Hermosillo, Sonora</p>
-      <h2>Birria con sabor de casa</h2>
+      <h2>Birria con <span>sabor de casa</span></h2>
       <p>Arma tu pedido: birria, tacos, consomé y bebidas.</p>
+      <ul class="hero__datos">
+        <li>🔥 Recién hecha</li>
+        <li>🌮 15 platillos y bebidas</li>
+        <li>📶 Funciona sin internet</li>
+      </ul>
     </div>
 
     <div class="layout">
