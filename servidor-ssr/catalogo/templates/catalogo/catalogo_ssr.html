@@ -6,24 +6,22 @@
   <style>
     body { font-family: system-ui, sans-serif; background: #fff7ed; color: #292524; margin: 2rem; }
     h1 { color: #9a3412; }
-    table { border-collapse: collapse; width: 100%; max-width: 720px; background: white; }
-    th, td { border: 1px solid #fed7aa; padding: .5rem .75rem; text-align: left; }
-    th { background: #9a3412; color: white; }
+    .catalogo { list-style: none; padding: 0; max-width: 720px; }
+    .catalogo li { display: flex; gap: 1rem; align-items: baseline; background: white; border: 1px solid #fed7aa; border-radius: 8px; padding: .6rem .9rem; margin-bottom: .5rem; }
+    .catalogo strong { flex: 1; }
+    .categoria, .stock { color: #78716c; font-size: .9rem; }
+    .precio { color: #9a3412; font-weight: 700; }
   </style>
 </head>
 <body>
   <h1>Birriería Paredes · Catálogo</h1>
   <p>Versión renderizada en el servidor (SSR) con Django.</p>
 
-  <table>
-    <tr><th>Producto</th><th>Categoría</th><th>Precio</th></tr>
+  <!-- Cada producto llega ya escrito en el HTML: nombre, precio y stock -->
+  <ul class="catalogo">
     {% for producto in productos %}
-      <tr>
-        <td>{{ producto.nombre }}</td>
-        <td>{{ producto.categoria }}</td>
-        <td>${{ producto.precio }}</td>
-      </tr>
+    <li><strong>{{ producto.nombre }}</strong> <span class="categoria">{{ producto.categoria }}</span> <span class="precio">${{ producto.precio }}</span> <span class="stock">Stock: {{ producto.stock }}</span></li>
     {% endfor %}
-  </table>
+  </ul>
 </body>
 </html>
